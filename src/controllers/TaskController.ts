@@ -9,13 +9,19 @@ export class TaskController {
         return res.status(201).json(newTask);
     }
 
-    public read = async (_: Request, res: Response): Promise<Response> => {
-        const allTasks = await this.taskService.read()
+    public read = async (req: Request, res: Response): Promise<Response> => {
+        const allTasks = await this.taskService.read(req.query.category);
+        
         return res.status(200).json(allTasks);
     }
 
     public retrieve = async (req: Request, res: Response): Promise<Response> => {
         const task = await this.taskService.retrieve(req.params.taskId)
+        return res.status(200).json(task);
+    }
+
+    public update = async (req: Request, res: Response): Promise<Response> => {
+        const task = await this.taskService.update(req.params.taskId, req.body)
         return res.status(200).json(task);
     }
 

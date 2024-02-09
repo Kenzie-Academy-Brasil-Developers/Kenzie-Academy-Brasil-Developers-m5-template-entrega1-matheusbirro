@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ensure } from "../middlewares";
-import { taskCreateSchema } from "../schemas";
+import { taskCreateSchema, taskUpdateSchema } from "../schemas";
 import { TaskController } from "../controllers/TaskController";
 
 export const tasksRouter = Router();
@@ -13,9 +13,10 @@ tasksRouter.post(
     ensure.bodyCategoryIdExists, 
     controller.create
 );
-tasksRouter.get("", controller.read);
+tasksRouter.get("",controller.read);
 
 tasksRouter.use("/:taskId", ensure.paramsTaskIdExists);
 
 tasksRouter.get("/:taskId", controller.retrieve);
+tasksRouter.patch("/:taskId", ensure.validBody(taskUpdateSchema), controller.update);
 tasksRouter.delete("/:taskId", controller.delete);

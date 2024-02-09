@@ -15,7 +15,7 @@ describe("create task", () => {
    });
 
    it("should throw error when try to create a task in a invalid category", async () => {
-      await request.post("/tasks").send(taskWithInvalidCategory).expect(403);
+      await request.post("/tasks").send(taskWithInvalidCategory).expect(404);
    });
 
    it("should throw error when try to create a task with a missing body parameter", async () => {

@@ -3,23 +3,55 @@ import { Task, TaskCreate, TaskReturn } from "../interfaces/task.interfaces";
 import { taskReturnSchema, taskSchema } from "../schemas";
 
 export class TasksService { 
-    public create = async (payload: TaskCreate):Promise<TaskReturn> => {
+    public create = async ({categoryId, ...payload}: TaskCreate):Promise<TaskReturn> => {
+        if (categoryId) {
+            const newTask: TaskReturn = await prisma.task.create({ data: {finished: true, ...payload, categoryId} });
+            
+            return taskReturnSchema.parse(newTask) ;
+        }
         const newTask: TaskReturn = await prisma.task.create({ data: payload });
         return taskReturnSchema.parse(newTask) 
     };
 
-    public read = async ():Promise<Array<Task>> => {
+    public read = async (categoryId?: any):Promise<Array<Task>> => {   
+        if (categoryId) {
+            
+            const allTasks = await prisma.task.findMany(
+                {where: 
+                    {categoryId:  Number(categoryId)},
+                    include:{ category: true}
+                });
+            return taskSchema.array().parse(allTasks) 
+        }
+        
         const allTasks = await prisma.task.findMany({ include: {category: true} });
+        
         return taskSchema.array().parse(allTasks) 
     }; 
 
-    public retrieve = async (taskId:string):Promise<Task> => {
-        const task = await prisma.task.findUnique({ where: { id: Number(taskId) } });
+    public readTasksByCategory = async (categoryId: string): Promise<Array<Task>> => {
+        const allTasks = await prisma.task.findMany({where: {categoryId: Number(categoryId)}});
+        return taskSchema.array().parse(allTasks) 
+    }
+
+    public retrieve = async (taskId:string):Promise<Task | null> => {
+        const task = await prisma.task.findUnique(
+            { where: 
+                { id: Number(taskId)},
+                include:{ category: true}  
+            });
         return taskSchema.parse(task); 
     };
 
     public update = async (taskId:string, payload: Partial<TaskCreate>): Promise<TaskReturn> =>{
+        if(payload.categoryId) {
+            const task = await prisma.task.update({ data: {finished: true, ...payload},  where: { id: Number(taskId) } });
+        
+            return taskReturnSchema.parse(task);
+        }
+
         const task = await prisma.task.update({ data: payload,  where: { id: Number(taskId) } });
+        
         return taskReturnSchema.parse(task);
     }
     

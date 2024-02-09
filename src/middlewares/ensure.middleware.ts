@@ -13,7 +13,7 @@ class EnsureMiddleware{
 
     public bodyCategoryIdExists = async ({ body: { categoryId } }: Request,_: Response,next: NextFunction): Promise<void> => {
         if (!categoryId) {
-          next()
+          next();
         }
         const foundCategory = await prisma.category.findFirst({
           where: { id: Number(categoryId) },
