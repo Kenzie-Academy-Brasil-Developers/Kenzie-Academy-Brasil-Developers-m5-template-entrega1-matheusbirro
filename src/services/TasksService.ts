@@ -13,15 +13,17 @@ export class TasksService {
         return taskReturnSchema.parse(newTask) 
     };
 
-    public read = async (categoryId?: any):Promise<Array<Task>> => {   
-        if (categoryId) {
+    public read = async (categoryName?: any):Promise<Array<Task>> => {   
+        if (categoryName) {
             
             const allTasks = await prisma.task.findMany(
                 {where: 
-                    {categoryId:  Number(categoryId)},
-                    include:{ category: true}
+                    {category: {name: categoryName}},
+                    include: {category: true}
                 });
-            return taskSchema.array().parse(allTasks) 
+                
+                
+            return taskSchema.array().parse(allTasks)  
         }
         
         const allTasks = await prisma.task.findMany({ include: {category: true} });
@@ -29,8 +31,15 @@ export class TasksService {
         return taskSchema.array().parse(allTasks) 
     }; 
 
-    public readTasksByCategory = async (categoryId: string): Promise<Array<Task>> => {
-        const allTasks = await prisma.task.findMany({where: {categoryId: Number(categoryId)}});
+    public readTasksByCategory = async (categoryName: string): Promise<Array<Task>> => {
+        console.log(categoryName);
+        const allTasks = await prisma.task.findMany(
+            {where: 
+                {category: {name: categoryName}},
+                include: {category: true}
+            });
+            
+            
         return taskSchema.array().parse(allTasks) 
     }
 
