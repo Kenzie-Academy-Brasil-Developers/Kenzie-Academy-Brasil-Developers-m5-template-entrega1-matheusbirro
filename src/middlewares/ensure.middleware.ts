@@ -13,7 +13,7 @@ class EnsureMiddleware{
 
     public bodyCategoryIdExists = async ({ body: { categoryId } }: Request,_: Response,next: NextFunction): Promise<void> => {
         if (!categoryId) {
-          next();
+         return next();
         }
         const foundCategory = await prisma.category.findFirst({
           where: { id: Number(categoryId) },
@@ -31,10 +31,10 @@ class EnsureMiddleware{
         _: Response,
         next: NextFunction
       ): Promise<void> => {
-        const { taskId } = req.params;
+        const { id } = req.params;
     
         const foundTask = await prisma.task.findFirst({
-          where: { id: Number(taskId) }
+          where: { id: Number(id) }
         });
     
         if (!foundTask) {

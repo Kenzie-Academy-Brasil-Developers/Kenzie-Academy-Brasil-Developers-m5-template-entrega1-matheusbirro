@@ -10,23 +10,23 @@ export class TaskController {
     }
 
     public read = async (req: Request, res: Response): Promise<Response> => {
-        const allTasks = await this.taskService.read(req.query.category);
+        const allTasks = await this.taskService.read(req.query.category as string);
         
         return res.status(200).json(allTasks);
     }
 
     public retrieve = async (req: Request, res: Response): Promise<Response> => {
-        const task = await this.taskService.retrieve(req.params.taskId)
+        const task = await this.taskService.retrieve(req.params.id)
         return res.status(200).json(task);
     }
 
     public update = async (req: Request, res: Response): Promise<Response> => {
-        const task = await this.taskService.update(req.params.taskId, req.body)
+        const task = await this.taskService.update(req.params.id, req.body)
         return res.status(200).json(task);
     }
 
     public delete = async (req: Request, res: Response): Promise<Response> => {
-        await this.taskService.delete(req.params.taskId)
+        await this.taskService.delete(req.params.id)
         return res.status(204).json();
     }
 }

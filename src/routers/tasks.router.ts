@@ -15,8 +15,8 @@ tasksRouter.post(
 );
 tasksRouter.get("",controller.read);
 
-tasksRouter.use("/:taskId", ensure.paramsTaskIdExists);
+tasksRouter.use("/:id", ensure.paramsTaskIdExists);
 
-tasksRouter.get("/:taskId", controller.retrieve);
-tasksRouter.patch("/:taskId", ensure.validBody(taskUpdateSchema), controller.update);
-tasksRouter.delete("/:taskId", controller.delete);
+tasksRouter.get("/:id", controller.retrieve);
+tasksRouter.patch("/:id", ensure.validBody(taskUpdateSchema), controller.update);
+tasksRouter.delete("/:id", controller.delete);
