@@ -7,4 +7,12 @@ import {
     taskReturnSchema
 } from "./task.schema";
 
-export { baseSchema, taskSchema, taskCreateSchema, taskReturnSchema, taskUpdateSchema, categoryCreateSchema, categorySchema };
+import { 
+    userSchema, 
+    userCreateSchema, 
+    userReturnSchema
+} from "./user.schema";
+
+import { sessionCreateSchema, sessionReturnSchema } from "./session.schema";
+
+export { baseSchema, taskSchema, taskCreateSchema, taskReturnSchema, taskUpdateSchema, categoryCreateSchema, categorySchema, userSchema, userCreateSchema, userReturnSchema, sessionCreateSchema, sessionReturnSchema};

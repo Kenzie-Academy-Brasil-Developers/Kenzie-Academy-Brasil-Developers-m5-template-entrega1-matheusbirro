@@ -4,14 +4,14 @@ import { prisma } from "../database/prisma";
 import { AppError } from "../errors";
 
 class EnsureMiddleware{
-    public validBody = 
-        (schema: AnyZodObject) => 
+    public validBody = (schema: AnyZodObject) => 
         (req: Request, _:Response, next: NextFunction): void => {
+            
             req.body = schema.parse(req.body);
             return next();
     }
 
-    public bodyCategoryIdExists = async ({ body: { categoryId } }: Request,_: Response,next: NextFunction): Promise<void> => {
+    public bodyCategoryIdExists = async ({ body: { categoryId } }: Request, _: Response, next: NextFunction): Promise<void> => {
         if (!categoryId) {
          return next();
         }
@@ -60,7 +60,17 @@ class EnsureMiddleware{
     }
 
     return next();
-  };
+    };
+
+    public emailExists = async ({ body: { email } }, _:Response, next:NextFunction): Promise<void> => {
+      const foundUser = await prisma.user.findFirst({where: {email: email}});
+      
+      if (!foundUser) {
+        return next();
+      }
+
+      throw new AppError("This email is already registered", 409);
+    }
 }
 
 export const ensure = new EnsureMiddleware();

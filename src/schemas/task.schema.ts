@@ -7,13 +7,14 @@ const taskSchema = baseSchema.extend({
     content: z.string(),
     finished: z.boolean().default(false),
     category: categorySchema.nullish(),
+    userId: z.number().positive()
 });
 
 const taskReturnSchema = taskSchema.omit({category: true}).extend({ categoryId: z.number().positive().nullish()});
 
-const taskCreateSchema = taskReturnSchema.omit({id: true, finished: true});
+const taskCreateSchema = taskReturnSchema.omit({id: true, finished: true, userId: true});
 
-const taskUpdateSchema = taskReturnSchema.omit({id: true});
+const taskUpdateSchema = taskReturnSchema.omit({id: true, userId: true});
 
 
 export { taskSchema, taskCreateSchema, taskReturnSchema , taskUpdateSchema };

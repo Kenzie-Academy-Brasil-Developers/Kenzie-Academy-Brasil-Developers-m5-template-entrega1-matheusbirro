@@ -5,12 +5,12 @@ export class TaskController {
     private taskService: TasksService = new TasksService();
 
     public create = async (req: Request, res: Response): Promise<Response> => {
-        const newTask = await this.taskService.create(req.body)
+        const newTask = await this.taskService.create(req.body, res)
         return res.status(201).json(newTask);
     }
 
     public read = async (req: Request, res: Response): Promise<Response> => {
-        const allTasks = await this.taskService.read(req.query.category as string);
+        const allTasks = await this.taskService.read( res, req.query.category as string,);
         
         return res.status(200).json(allTasks);
     }

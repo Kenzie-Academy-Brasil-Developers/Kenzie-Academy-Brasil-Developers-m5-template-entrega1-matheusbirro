@@ -1,6 +1,7 @@
 import { ZodError } from "zod";
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "../errors";
+import { JsonWebTokenError } from "jsonwebtoken";
 
 class HandleErrorMiddleware {
     public static execute = (
@@ -15,6 +16,10 @@ class HandleErrorMiddleware {
 
         if(error instanceof ZodError) {
             return res.status(400).json({message: error.errors})
+        }
+
+        if (error instanceof JsonWebTokenError) {
+            return res.status(401).json({message: error.message})
         }
 
         console.log(error);
