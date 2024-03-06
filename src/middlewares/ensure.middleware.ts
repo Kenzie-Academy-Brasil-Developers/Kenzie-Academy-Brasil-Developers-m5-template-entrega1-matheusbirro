@@ -62,7 +62,7 @@ class EnsureMiddleware{
     return next();
     };
 
-    public emailExists = async ({ body: { email } }, _:Response, next:NextFunction): Promise<void> => {
+    public emailExists = async ({ body: { email } }:Request, _:Response, next:NextFunction): Promise<void> => {
       const foundUser = await prisma.user.findFirst({where: {email: email}});
       
       if (!foundUser) {
