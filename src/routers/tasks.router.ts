@@ -19,11 +19,12 @@ tasksRouter.post(
 tasksRouter.get(
     "",
     auth.isAuthenticated, 
+    ensure.categoryNameExists,
     controller.read
 );
 
 tasksRouter.use("/:id", auth.isAuthenticated, ensure.paramsTaskIdExists);
 
 tasksRouter.get("/:id", auth.isAuthenticated,permission.isOwnerTaskId, controller.retrieve);
-tasksRouter.patch("/:id", ensure.validBody(taskUpdateSchema), permission.isOwnerTaskId, controller.update);
+tasksRouter.patch("/:id", ensure.validBody(taskUpdateSchema), permission.isOwnerTaskId, ensure.bodyCategoryIdExists, controller.update);
 tasksRouter.delete("/:id", permission.isOwnerTaskId, controller.delete);

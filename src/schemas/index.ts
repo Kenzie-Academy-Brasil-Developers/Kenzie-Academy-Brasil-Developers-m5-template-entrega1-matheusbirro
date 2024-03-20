@@ -1,10 +1,11 @@
 import { baseSchema } from "./base.schema";
-import { categoryCreateSchema, categorySchema } from "./category.schema";
+import { categoryCreateSchema, categoryReturnSchema, categorySchema } from "./category.schema";
 import { 
     taskSchema, 
     taskCreateSchema, 
     taskUpdateSchema, 
-    taskReturnSchema
+    taskReturnSchema,
+    taskReturnGetSchema
 } from "./task.schema";
 
 import { 
@@ -15,4 +16,4 @@ import {
 
 import { sessionCreateSchema, sessionReturnSchema } from "./session.schema";
 
-export { baseSchema, taskSchema, taskCreateSchema, taskReturnSchema, taskUpdateSchema, categoryCreateSchema, categorySchema, userSchema, userCreateSchema, userReturnSchema, sessionCreateSchema, sessionReturnSchema};
+export { baseSchema, taskSchema, taskCreateSchema, taskReturnSchema, taskReturnGetSchema, taskUpdateSchema, categoryCreateSchema, categorySchema, categoryReturnSchema, userSchema, userCreateSchema, userReturnSchema, sessionCreateSchema, sessionReturnSchema};

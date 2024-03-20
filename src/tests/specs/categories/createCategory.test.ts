@@ -17,6 +17,9 @@ describe("create category", async () => {
       .expect(201)
       .then((response) => response.body);
 
+
+      console.log(data);
+      
     expect(data).toBeDefined();
     expect(data).toBeTypeOf("object");
 

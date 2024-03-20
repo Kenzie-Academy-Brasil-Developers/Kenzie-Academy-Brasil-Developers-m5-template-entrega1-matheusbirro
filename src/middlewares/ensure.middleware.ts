@@ -62,6 +62,28 @@ class EnsureMiddleware{
     return next();
     };
 
+    public categoryNameExists = async (
+      req: Request,
+      _: Response,
+      next: NextFunction
+      ): Promise<void> => {
+        if (req.query.category) {
+          
+          const categoryName = req.query.category.toString();
+    
+          const foundCategory = await prisma.category.findFirst({
+            where: { name: categoryName }
+          });
+    
+          if (!foundCategory) {
+            throw new AppError("Category not found!", 404);
+          }
+        }
+
+
+      return next();
+    };
+
     public emailExists = async ({ body: { email } }:Request, _:Response, next:NextFunction): Promise<void> => {
       const foundUser = await prisma.user.findFirst({where: {email: email}});
       

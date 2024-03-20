@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { prisma } from "../database/prisma";
-import { Task, TaskCreate, TaskReturn } from "../interfaces/task.interfaces";
-import { taskReturnSchema, taskSchema } from "../schemas";
+import { Task, TaskCreate, TaskReturn, TaskReturnGet } from "../interfaces/task.interfaces";
+import { taskReturnGetSchema, taskReturnSchema, taskSchema } from "../schemas";
 
 export class TasksService { 
     public create = async ({categoryId, ...payload}: TaskCreate, res:Response):Promise<TaskReturn> => {
@@ -16,28 +16,32 @@ export class TasksService {
         return taskReturnSchema.parse(newTask);
     };
 
-    public read = async (res: Response, categoryName?: string):Promise<Task[]> => {   
+    public read = async (res: Response, categoryName?: string):Promise<TaskReturnGet[]> => {   
         const userId = Number(res.locals.decoded.sub);
         
         if (categoryName) {
             const allTasks = await prisma.task.findMany(
                 {where: 
                     {category: {name: categoryName}},
-                    include: {category: true}
-                }
+                    include: {
+                        category: true
+                    },
+                },
             );   
             
-            return taskSchema.array().parse(allTasks)  
+            return taskReturnGetSchema.array().parse(allTasks)  
         }
         
         const allTasks = await prisma.task.findMany(
             {where: 
                 {userId: userId},
-                include: {category: true}
-            }
+                include: {
+                    category: true
+                },
+            },
         );
             
-        return taskSchema.array().parse(allTasks) 
+        return taskReturnGetSchema.array().parse(allTasks) 
     }; 
 
     // public readTasksByCategory = async (categoryName: string): Promise<Task[]> => {
@@ -51,13 +55,13 @@ export class TasksService {
     //     return taskSchema.array().parse(allTasks) 
     // }
 
-    public retrieve = async (taskId:string):Promise<Task | null> => {
+    public retrieve = async (taskId:string):Promise<TaskReturnGet | null> => {
         const task = await prisma.task.findUnique(
             { where: 
                 { id: Number(taskId)},
                 include:{ category: true}  
             });
-        return taskSchema.parse(task); 
+        return taskReturnGetSchema.parse(task); 
     };
 
     public update = async (taskId:string, payload: Partial<TaskCreate>): Promise<TaskReturn> =>{

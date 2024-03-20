@@ -6,6 +6,10 @@ const categorySchema = baseSchema.extend({
     userId: z.number()
 })
 
+const categoryReturnSchema = baseSchema.extend({
+    name: z.string(),
+})
+
 const categoryCreateSchema = categorySchema.omit({id: true, userId: true});
 
-export { categoryCreateSchema, categorySchema };
+export { categoryCreateSchema, categorySchema, categoryReturnSchema };
