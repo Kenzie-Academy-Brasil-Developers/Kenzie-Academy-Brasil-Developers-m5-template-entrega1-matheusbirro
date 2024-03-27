@@ -364,6 +364,53 @@ Possíveis erros:
 `POST /categories - Quando o corpo não é compatível com o padrão - STATUS 400`
 
 <h2 align="center"> 
+    Lendo as categorias
+</h2>
+
+`GET /categories - FORMATO DA REQUISIÇÃO`
+
+Caso dê tudo certo, a resposta será assim:
+
+`GET /categories - FORMATO DA RESPOSTA - STATUS 201`
+
+````json
+[
+    {
+	"id": 1,
+	"name": "Estudo"
+    },
+    {
+	"id": 2,
+	"name": "Trabalho"
+    },
+]
+````
+### Leitura de tarefa individual
+
+`GET /categories/:id`
+
+Caso dê tudo certo, a resposta será assim:
+
+`GET /categories/1 - FORMATO DA RESPOSTA - STATUS 200`
+
+````json
+[
+    {
+	"id": 1,
+	"name": "Example"
+} 
+]    
+````
+
+Possíveis erros:
+
+`GET /categories/:id - Categoria não encontrada. - STATUS 404`
+
+````json
+{"message": "Category not found"}
+````
+
+<h2 align="center"> 
     Excluindo a categoria
 </h2>
 

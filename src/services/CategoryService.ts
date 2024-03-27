@@ -13,6 +13,26 @@ export class CategoryService {
         return categoryReturnSchema.parse(newCategory);
     };
 
+    public read = async (res:Response):Promise<categoryReturn[]> => {   
+        const userId = Number(res.locals.decoded.sub);
+        
+        const allCategories = await prisma.category.findMany(
+            {where:
+                {userId: userId}
+            }
+        );
+            
+        return categoryReturnSchema.array().parse(allCategories) 
+    };
+
+    public retrieve = async (categoryId:string):Promise<categoryReturn> => {
+        const category = await prisma.category.findUnique(
+            { where: 
+                { id: Number(categoryId)},
+            });
+        return categoryReturnSchema.parse(category); 
+    };
+
     public delete = async (categoryId: string):Promise<void> => {
         await prisma.category.delete({ where: { id: Number(categoryId) } }); 
     }; 

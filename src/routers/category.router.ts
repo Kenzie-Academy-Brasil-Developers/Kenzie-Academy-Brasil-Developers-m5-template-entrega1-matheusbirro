@@ -15,6 +15,14 @@ categoryRouter.post(
     controller.create
 );
 
+categoryRouter.get(
+    "", 
+    auth.isAuthenticated, 
+    controller.read
+);
+
 categoryRouter.use("/:categoryId", auth.isAuthenticated,ensure.categoryIdExists, permission.isOwnerCategoryId );
+
+categoryRouter.get("/:categoryId",controller.retrieve);
 
 categoryRouter.delete("/:categoryId",controller.delete);
